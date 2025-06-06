@@ -34,7 +34,7 @@ MultiSerialMonitor is a simple Windows Forms application built in C# for monitor
 
 ## Tests
 <div style="text-align: center;">
-  <img src="images/test1.png" alt="Test 1 Image" width="400">
+  <img src="images/test1.png" alt="Test 1 Image" width="800">
 </div>
 This is general view on 06/06/2025
 <hr>
