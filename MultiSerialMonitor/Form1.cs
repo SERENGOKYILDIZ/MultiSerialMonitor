@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO.Ports;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -16,38 +17,44 @@ namespace MultiSerialMonitor
         {
             InitializeComponent();
 
+            // Fix the form size to prevent resizing
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimumSize = new Size(723, 408);
             this.MaximumSize = new Size(723, 408);
 
-            PopulateAvailablePorts();
+            // Populate ports at startup and setup dynamic refresh on dropdown open
+            UpdateAvailablePorts();
+            comboBoxPorts.DropDown += comboBoxPorts_DropDown;
+
             InitializeReceiveTimer();
+
+            // Handle Enter key press to send data
             textBoxSend.KeyDown += TextBoxSend_KeyDown;
 
-            UpdateConnectionStatus(false, null, 0); // There is no connection in the first case
-            buttonSend.Enabled = false; // Initially, the send button is passive
+            // Initial UI state: no connection
+            UpdateConnectionStatus(false, null, 0);
+            buttonSend.Enabled = false; // Send button disabled initially
         }
 
         /// <summary>
-        /// Initialize and start a timer to process incoming serial data every 100 ms
+        /// Initialize and start a timer to process incoming serial data every 100 ms.
         /// </summary>
         private void InitializeReceiveTimer()
         {
             receiveTimer = new System.Windows.Forms.Timer
             {
-                Interval = 100 // Interval in milliseconds
+                Interval = 100
             };
             receiveTimer.Tick += ReceiveTimer_Tick;
             receiveTimer.Start();
         }
 
         /// <summary>
-        /// Timer event handler to process buffered incoming data if timeout elapsed
+        /// Timer event handler that flushes the receive buffer if no new data is received within the timeout.
         /// </summary>
         private void ReceiveTimer_Tick(object sender, EventArgs e)
         {
-            // Check if 100ms passed since last received data and buffer is not empty
             if ((DateTime.Now - lastReceiveTime).TotalMilliseconds >= 100 && receiveBuffer.Length > 0)
             {
                 string fullMessage = receiveBuffer.ToString();
@@ -57,29 +64,50 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Populate the available serial ports into the comboBoxPorts and select defaults
+        /// Refresh the list of available COM ports, preserving the current selection if still valid.
         /// </summary>
-        private void PopulateAvailablePorts()
+        private void UpdateAvailablePorts()
         {
+            string currentSelection = comboBoxPorts.SelectedItem?.ToString();
+
             string[] ports = SerialPort.GetPortNames();
             comboBoxPorts.Items.Clear();
             comboBoxPorts.Items.AddRange(ports);
 
-            if (ports.Length > 0)
+            if (ports.Length == 0)
+            {
+                comboBoxPorts.Text = "No COM ports found";
+            }
+            else if (currentSelection != null && ports.Contains(currentSelection))
+            {
+                comboBoxPorts.SelectedItem = currentSelection;
+            }
+            else
+            {
                 comboBoxPorts.SelectedIndex = 0;
+            }
 
-            if (comboBoxBaudRate.Items.Count > 0)
+            // Ensure a baud rate is selected if not set
+            if (comboBoxBaudRate.Items.Count > 0 && comboBoxBaudRate.SelectedIndex == -1)
                 comboBoxBaudRate.SelectedIndex = 0;
         }
 
         /// <summary>
-        /// Handles pressing Enter key in textBoxSend to trigger sending data if port is open
+        /// Event handler for dropdown opening of the ports combo box to refresh port list.
+        /// </summary>
+        private void comboBoxPorts_DropDown(object sender, EventArgs e)
+        {
+            UpdateAvailablePorts();
+        }
+
+        /// <summary>
+        /// Handle Enter key press in the send text box to trigger sending data if connected.
         /// </summary>
         private void TextBoxSend_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                e.SuppressKeyPress = true; // Prevent ding sound and new line
+                e.SuppressKeyPress = true;
 
                 if (serialPort1.IsOpen)
                 {
@@ -93,11 +121,11 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Updates status label and Send button enable state according to connection
+        /// Update the status label and the Send button enabled state based on connection status.
         /// </summary>
-        /// <param name="connected">Is serial port connected?</param>
-        /// <param name="portName">Connected port name</param>
-        /// <param name="baudRate">Connected baud rate</param>
+        /// <param name="connected">True if serial port is connected.</param>
+        /// <param name="portName">Port name string.</param>
+        /// <param name="baudRate">Baud rate value.</param>
         private void UpdateConnectionStatus(bool connected, string portName, int baudRate)
         {
             if (connected)
@@ -113,7 +141,7 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Connect or disconnect the serial port based on current state
+        /// Connect or disconnect serial port when Connect button is clicked.
         /// </summary>
         private void buttonConnect_Click(object sender, EventArgs e)
         {
@@ -121,14 +149,13 @@ namespace MultiSerialMonitor
             {
                 try
                 {
-                    serialPort1.PortName = comboBoxPorts.SelectedItem.ToString();
-                    serialPort1.BaudRate = int.Parse(comboBoxBaudRate.SelectedItem.ToString());
+                    serialPort1.PortName = comboBoxPorts.SelectedItem?.ToString();
+                    serialPort1.BaudRate = int.Parse(comboBoxBaudRate.SelectedItem?.ToString() ?? "9600");
                     serialPort1.DataReceived += SerialPort1_DataReceived;
                     serialPort1.Open();
 
                     buttonConnect.Text = "Disconnect";
                     MessageBox.Show("Connection established.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                     UpdateConnectionStatus(true, serialPort1.PortName, serialPort1.BaudRate);
                 }
                 catch (Exception ex)
@@ -144,7 +171,6 @@ namespace MultiSerialMonitor
                     serialPort1.Close();
                     buttonConnect.Text = "Connect";
                     MessageBox.Show("Connection closed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                     UpdateConnectionStatus(false, null, 0);
                 }
                 catch (Exception ex)
@@ -155,7 +181,7 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Send the data from textBoxSend if the serial port is open
+        /// Send data through serial port if connected.
         /// </summary>
         private void buttonSend_Click(object sender, EventArgs e)
         {
@@ -182,7 +208,7 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Event handler for serial port data reception, append data to buffer and update last receive timestamp
+        /// Event handler for serial port DataReceived event, buffering incoming data.
         /// </summary>
         private void SerialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -192,7 +218,7 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Clear the richTextBoxLog content
+        /// Clear the log display.
         /// </summary>
         private void buttonClear_Click(object sender, EventArgs e)
         {
@@ -200,17 +226,17 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Helper method to convert control characters (\r and \n) into visible notation
+        /// Replace control characters (\r and \n) with visible representations.
         /// </summary>
-        /// <param name="data">Input string data</param>
-        /// <returns>String with control chars replaced</returns>
+        /// <param name="data">Input string.</param>
+        /// <returns>String with control characters shown as [0x0D] and [0x0A].</returns>
         private string ShowControlChars(string data)
         {
             return data.Replace("\r", "[0x0D]").Replace("\n", "[0x0A]");
         }
 
         /// <summary>
-        /// Append a colored line of text to the richTextBoxLog and scroll to the bottom
+        /// Append a colored line of text to the log textbox.
         /// </summary>
         private void AppendLogLine(string text, Color color)
         {
@@ -221,9 +247,8 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Log sent data in richTextBoxLog with timestamp, visible control characters and byte count
+        /// Log sent data with timestamp, visible control characters, and byte count.
         /// </summary>
-        /// <param name="data">Sent data string</param>
         private void LogSentData(string data)
         {
             string timestamp = DateTime.Now.ToString("HH:mm:ss");
@@ -234,9 +259,8 @@ namespace MultiSerialMonitor
         }
 
         /// <summary>
-        /// Log received data in richTextBoxLog with timestamp, visible control characters and byte count
+        /// Log received data with timestamp, visible control characters, and byte count.
         /// </summary>
-        /// <param name="data">Received data string</param>
         private void LogReceivedData(string data)
         {
             string timestamp = DateTime.Now.ToString("HH:mm:ss");
