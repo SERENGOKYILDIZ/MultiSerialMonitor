@@ -45,9 +45,9 @@
             // 
             this.comboBoxPorts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxPorts.FormattingEnabled = true;
-            this.comboBoxPorts.Location = new System.Drawing.Point(108, 22);
+            this.comboBoxPorts.Location = new System.Drawing.Point(132, 22);
             this.comboBoxPorts.Name = "comboBoxPorts";
-            this.comboBoxPorts.Size = new System.Drawing.Size(126, 28);
+            this.comboBoxPorts.Size = new System.Drawing.Size(126, 33);
             this.comboBoxPorts.TabIndex = 0;
             // 
             // comboBoxBaudRate
@@ -60,15 +60,15 @@
             "38400",
             "57600",
             "115200"});
-            this.comboBoxBaudRate.Location = new System.Drawing.Point(371, 20);
+            this.comboBoxBaudRate.Location = new System.Drawing.Point(385, 22);
             this.comboBoxBaudRate.Name = "comboBoxBaudRate";
-            this.comboBoxBaudRate.Size = new System.Drawing.Size(168, 28);
+            this.comboBoxBaudRate.Size = new System.Drawing.Size(168, 33);
             this.comboBoxBaudRate.TabIndex = 1;
             // 
             // buttonConnect
             // 
             this.buttonConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonConnect.Location = new System.Drawing.Point(559, 18);
+            this.buttonConnect.Location = new System.Drawing.Point(583, 18);
             this.buttonConnect.Name = "buttonConnect";
             this.buttonConnect.Size = new System.Drawing.Size(122, 34);
             this.buttonConnect.TabIndex = 2;
@@ -81,13 +81,13 @@
             this.textBoxSend.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxSend.Location = new System.Drawing.Point(20, 60);
             this.textBoxSend.Name = "textBoxSend";
-            this.textBoxSend.Size = new System.Drawing.Size(519, 26);
+            this.textBoxSend.Size = new System.Drawing.Size(533, 30);
             this.textBoxSend.TabIndex = 3;
             // 
             // buttonSend
             // 
             this.buttonSend.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSend.Location = new System.Drawing.Point(559, 56);
+            this.buttonSend.Location = new System.Drawing.Point(583, 56);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(122, 34);
             this.buttonSend.TabIndex = 4;
@@ -103,7 +103,7 @@
             this.richTextBoxLog.Location = new System.Drawing.Point(20, 100);
             this.richTextBoxLog.Name = "richTextBoxLog";
             this.richTextBoxLog.ReadOnly = true;
-            this.richTextBoxLog.Size = new System.Drawing.Size(661, 200);
+            this.richTextBoxLog.Size = new System.Drawing.Size(685, 200);
             this.richTextBoxLog.TabIndex = 5;
             this.richTextBoxLog.Text = "";
             // 
@@ -113,7 +113,7 @@
             this.labelPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPort.Location = new System.Drawing.Point(20, 23);
             this.labelPort.Name = "labelPort";
-            this.labelPort.Size = new System.Drawing.Size(82, 20);
+            this.labelPort.Size = new System.Drawing.Size(106, 25);
             this.labelPort.TabIndex = 6;
             this.labelPort.Text = "COM Port:";
             // 
@@ -121,30 +121,31 @@
             // 
             this.labelBaud.AutoSize = true;
             this.labelBaud.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelBaud.Location = new System.Drawing.Point(275, 25);
+            this.labelBaud.Location = new System.Drawing.Point(270, 27);
             this.labelBaud.Name = "labelBaud";
-            this.labelBaud.Size = new System.Drawing.Size(90, 20);
+            this.labelBaud.Size = new System.Drawing.Size(109, 25);
             this.labelBaud.TabIndex = 7;
             this.labelBaud.Text = "Baud Rate:";
             // 
             // buttonClear
             // 
             this.buttonClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonClear.Location = new System.Drawing.Point(20, 310);
+            this.buttonClear.Location = new System.Drawing.Point(20, 306);
             this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(80, 30);
+            this.buttonClear.Size = new System.Drawing.Size(113, 41);
             this.buttonClear.TabIndex = 8;
-            this.buttonClear.Text = "Temizle";
+            this.buttonClear.Text = "Clean";
             this.buttonClear.UseVisualStyleBackColor = true;
             this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelConnection});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 347);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 354);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(707, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(745, 26);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 10;
             this.statusStrip1.Text = "statusStrip1";
@@ -152,12 +153,12 @@
             // toolStripStatusLabelConnection
             // 
             this.toolStripStatusLabelConnection.Name = "toolStripStatusLabelConnection";
-            this.toolStripStatusLabelConnection.Size = new System.Drawing.Size(86, 17);
+            this.toolStripStatusLabelConnection.Size = new System.Drawing.Size(106, 20);
             this.toolStripStatusLabelConnection.Text = "No connection";
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(707, 369);
+            this.ClientSize = new System.Drawing.Size(745, 380);
             this.Controls.Add(this.comboBoxPorts);
             this.Controls.Add(this.comboBoxBaudRate);
             this.Controls.Add(this.buttonConnect);

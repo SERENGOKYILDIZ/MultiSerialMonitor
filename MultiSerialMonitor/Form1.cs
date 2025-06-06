@@ -20,8 +20,8 @@ namespace MultiSerialMonitor
             // Fix the form size to prevent resizing
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MinimumSize = new Size(723, 408);
-            this.MaximumSize = new Size(723, 408);
+            this.MinimumSize = new Size(763, 427);
+            this.MaximumSize = new Size(763, 427);
 
             // Populate ports at startup and setup dynamic refresh on dropdown open
             UpdateAvailablePorts();
