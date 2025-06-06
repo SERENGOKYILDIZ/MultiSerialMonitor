@@ -1,6 +1,7 @@
 # MultiSerialMonitor
 
 MultiSerialMonitor is a simple Windows Forms application built in C# for monitoring and interacting with serial COM ports. It allows users to connect to available serial ports, send data, and view incoming data with timestamps and byte counts in a user-friendly interface.
+<hr>
 
 ## Features
 
@@ -12,6 +13,7 @@ MultiSerialMonitor is a simple Windows Forms application built in C# for monitor
 - Logs both sent and received data with color-coded entries.
 - Clear the log display anytime.
 - Fixed window size with intuitive controls.
+<hr>
 
 ## Usage
 
@@ -21,17 +23,26 @@ MultiSerialMonitor is a simple Windows Forms application built in C# for monitor
 4. Type your message into the textbox and press **Send** or hit **Enter** to transmit.
 5. Incoming data will be displayed with timestamps and highlighted for easy reading.
 6. Use the **Clear** button to reset the log.
+<hr>
 
 ## Requirements
 
 - Windows OS
 - .NET Framework (version compatible with Windows Forms)
 - Serial device connected to the computer
+<hr>
+
+## Tests
+<div style="text-align: center;">
+  <img src="images/test1.png" alt="Test 1 Image" width="400">
+</div>
+This is general view on 06/06/2025
+<hr>
 
 ## License
 
 This project is open-source and free to use for educational and personal projects.
 
----
+<hr>
 
 Created with ❤️ by [Semi Eren Gökyıldız]
